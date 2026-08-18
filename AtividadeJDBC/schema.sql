@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS tb_curso (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    periodo VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tb_tarefa (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(150) NOT NULL,
+    descricao VARCHAR(500),
+    categoria VARCHAR(50) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDENTE'
+);
