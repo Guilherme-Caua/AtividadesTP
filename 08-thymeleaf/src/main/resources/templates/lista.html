@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+          crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Lista de Produtos</title>
+</head>
+<body>
+<div class="container mt-5 conteudo">
+    <h1 class="mb-4">Lista de Produtos</h1>
+
+    <!-- Mensagem enviada pelo Controller via redirect (cadastro / remoção) -->
+    <div class="alert alert-success" role="alert" th:if="${mensagem}" th:text="${mensagem}">Mensagem</div>
+
+    <!-- Exercício 17: busca por nome e filtro por categoria (GET /lista?busca=...&categoria=...) -->
+    <form class="form-inline mb-3" th:action="@{/lista}" method="get">
+        <input class="form-control mr-2" type="text" name="busca" th:value="${busca}"
+               placeholder="Buscar por nome" />
+        <select class="form-control mr-2" name="categoria">
+            <option value="">Todas as categorias</option>
+            <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}"
+                    th:selected="${c == categoriaSelecionada}">Categoria</option>
+        </select>
+        <button class="btn btn-outline-primary mr-2" type="submit">Filtrar</button>
+        <a th:href="@{/lista}" class="btn btn-link">Limpar</a>
+    </form>
+
+    <div class="card">
+        <div class="card-body">
+
+            <!-- th:if: só aparece quando a lista está vazia -->
+            <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(produtos)}">
+                Nenhum produto encontrado.
+            </div>
+
+            <!-- th:unless: só aparece quando há produtos -->
+            <table class="table table-striped" th:unless="${#lists.isEmpty(produtos)}">
+                <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Estoque</th>
+                    <th>Preço</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- th:each: uma linha para cada produto; iterStat.count = 1, 2, 3... -->
+                <tr th:each="produto, iterStat : ${produtos}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td th:text="${produto.nome}">Nome</td>
+                    <td th:text="${produto.descricao}">Descrição</td>
+                    <td th:text="${produto.categoria}">Categoria</td>
+                    <td th:text="${produto.estoque}">0</td>
+                    <td th:text="'R$ ' + ${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">0,00</td>
+                    <td>
+                        <!-- Exercício 15: botão Remover (POST /remover/{id}) -->
+                        <form th:action="@{/remover/{id}(id=${produto.id})}" method="post"
+                              onsubmit="return confirm('Remover este produto?');">
+                            <button class="btn btn-sm btn-danger" type="submit">Remover</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Exercício 12: total de produtos abaixo da tabela -->
+            <p class="text-muted" th:unless="${#lists.isEmpty(produtos)}"
+               th:text="${produtos.size()} + ' produto(s) listado(s)'"></p>
+
+            <a th:href="@{/cadastrar}" class="btn btn-primary">+ Cadastrar novo produto</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

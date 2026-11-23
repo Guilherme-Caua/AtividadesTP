@@ -1,0 +1,53 @@
+/* Exercício 11: estilo básico (cor, fonte, bordas) */
+body {
+    background-color: #f4f6fb;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    color: #2d3748;
+}
+
+.conteudo {
+    max-width: 900px;
+}
+
+h1 {
+    color: #2b4c9b;
+    font-weight: 600;
+    border-bottom: 3px solid #2b4c9b;
+    padding-bottom: 8px;
+}
+
+form, .card {
+    background-color: #ffffff;
+    border: 1px solid #d9e0f0;
+    border-radius: 8px;
+}
+
+form {
+    padding: 20px;
+}
+
+/* o botão Remover fica dentro de um form: sem caixa, sem espaçamento */
+td form {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.form-inline {
+    padding: 12px 16px;
+}
+
+.card {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.erro {
+    color: #c53030;
+    font-size: 0.875rem;
+    margin-top: 4px;
+}
+
+.btn-primary {
+    background-color: #2b4c9b;
+    border-color: #2b4c9b;
+}

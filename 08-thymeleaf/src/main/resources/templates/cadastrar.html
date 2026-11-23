@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+          crossorigin="anonymous">
+    <!-- Exercício 11: CSS próprio -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Cadastrar Produto</title>
+</head>
+<body>
+<div class="container mt-5 conteudo">
+    <h1 class="mb-4">Cadastrar Produto</h1>
+
+    <!--
+        th:action  -> o formulário envia um POST para /cadastrar
+        th:object  -> vincula o formulário ao objeto "produto" enviado pelo Controller
+    -->
+    <form th:action="@{/cadastrar}" th:object="${produto}" method="post">
+
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input class="form-control" type="text" th:field="*{nome}"
+                   placeholder="Ex: Camiseta, Notebook..." />
+            <!-- th:errors mostra a mensagem de validação do campo, se houver -->
+            <div class="erro" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">Erro</div>
+        </div>
+
+        <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <input class="form-control" type="text" th:field="*{descricao}"
+                   placeholder="Ex: Algodão, tamanho M" />
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="preco">Preço (R$)</label>
+                <!-- Sem min="0" de propósito: a validação negativa é feita no servidor (exercício 14) -->
+                <input class="form-control" type="number" th:field="*{preco}"
+                       step="0.01" placeholder="Ex: 49.90" />
+                <div class="erro" th:if="${#fields.hasErrors('preco')}" th:errors="*{preco}">Erro</div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="estoque">Estoque</label>
+                <input class="form-control" type="number" th:field="*{estoque}" step="1" />
+                <div class="erro" th:if="${#fields.hasErrors('estoque')}" th:errors="*{estoque}">Erro</div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="categoria">Categoria</label>
+                <!-- Exercício 13: dropdown com opções fixas vindas do Controller -->
+                <select class="form-control" th:field="*{categoria}">
+                    <option value="">Selecione...</option>
+                    <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}">Categoria</option>
+                </select>
+                <div class="erro" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}">Erro</div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Cadastrar</button>
+        <a th:href="@{/lista}" class="btn btn-secondary">Ver lista de produtos</a>
+    </form>
+</div>
+</body>
+</html>
